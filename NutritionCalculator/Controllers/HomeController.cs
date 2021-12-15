@@ -20,6 +20,8 @@ namespace NutritionCalculator.Controllers
 
         public IActionResult Index()
         {
+            //var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            //return Content(environment);
             return View();
         }
 
