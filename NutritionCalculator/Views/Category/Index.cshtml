@@ -1,0 +1,14 @@
+﻿@model CategoryViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="text-center">
+    <h4>Categories</h4>
+    <br />
+    <form asp-controller="MenuItem" asp-action="Index" method="post">
+        <select asp-for="Id" asp-items="@Model.GetCategories()"
+                class="form-group form-control" onchange="this.form.submit();">
+            <option selected style="display:none;">Select Category</option>
+        </select>
+    </form>
+</div>
