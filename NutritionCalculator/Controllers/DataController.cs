@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NutritionCalculator.Models;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using NutritionCalculator.Models;
 
 namespace NutritionCalculator.Controllers
 {
