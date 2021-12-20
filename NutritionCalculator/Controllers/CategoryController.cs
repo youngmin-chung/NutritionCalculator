@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NutritionCalculator.Models;
+using NutritionCalculator.Utils;
+using System;
+using System.Collections.Generic;
 
 namespace NutritionCalculator.Controllers
 {
@@ -17,23 +20,34 @@ namespace NutritionCalculator.Controllers
          * What all of this does is really make the database data available to view in ViewModel instance.
          *
          */
-        // retrieve the menu items from the model so swe can popluate teh new property we just added.
+        // retrieve the menu items from the model so we can popluate teh new property we just added.
         public IActionResult Index(CategoryViewModel vm)
         {
-            CategoryViewModel viewModel;
-            if (vm.Id == 0) // 1st time
+            // only build the catalogue once
+            if (HttpContext.Session.Get<List<Category>>("categories") == null)
             {
-                viewModel = new CategoryViewModel();
+                // no session information so let's go to the database
+                try
+                {
+                    CategoryModel catModel = new CategoryModel(_db);
+                    // now load the categories
+                    List<Category> categories = catModel.GetAll();
+                    HttpContext.Session.Set<List<Category>>("categories", categories);
+                    vm.SetCategories(categories);
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = "Catalogue Problem - " + ex.Message;
+                }
             }
             else
             {
-                viewModel = vm;
+                // no need to go back to the database as information is already in the session
+                vm.SetCategories(HttpContext.Session.Get<List<Category>>("categories"));
                 MenuItemModel itemModel = new MenuItemModel(_db);
-                viewModel.MenuItems = itemModel.GetAllByCategory(vm.Id);
+                vm.MenuItems = itemModel.GetAllByCategory(vm.Id);
             }
-            CategoryModel catModel = new CategoryModel(_db);
-            viewModel.Categories = catModel.GetAll();
-            return View(viewModel);
+            return View(vm);
         }
     }
 }
