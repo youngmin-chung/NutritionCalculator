@@ -6,18 +6,24 @@ namespace NutritionCalculator.Models
 {
     public class CategoryViewModel
     {
+        private List<Category> _categories;
         public CategoryViewModel() { }
         public string CategoryName { get; set; }
         public int Id { get; set; }
-        public List<Category> Categories { get; set; }
+        // to contain the child MenuItems directly in the parent
+        public IEnumerable<MenuItem> MenuItems { get; set; }
+        //public List<Category> Categories { get; set; }
         public IEnumerable<SelectListItem> GetCategories()
         {
-            return Categories.Select(category => new SelectListItem
+            return _categories.Select(category => new SelectListItem
             {
                 Text = category.Name, Value = category.Id.ToString()
             });
         }
-        // to contain the child MenuItems directly in the parent
-        public IEnumerable<MenuItem> MenuItems { get; set; }
+
+        public void SetCategories(List<Category> cats)
+        {
+            _categories = cats;
+        }
     }
 }
