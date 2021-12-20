@@ -15,12 +15,22 @@
         @if(Model.MenuItems != null && Model.MenuItems.Count() > 0)
             {
                 <h5 class="mt-2">Items</h5>
-                <div class="mt-3" style="overflow-y:scroll; height:50vh">
+                <div class="row w-100 m-1" style="overflow-y:scroll; height:50vh">
                     @foreach(MenuItem item in Model.MenuItems)
                 {
-                    <li class="list-group-item" >
-                        @item.Description
-                    </li>
+                    <div id="item" class="col-sm-3 col-xs-12 text-center" style="border:solid;">
+                        <img class="mt-2" style="width:100px;height:100px;" src="https://github.com/youngmin-chung/capture/blob/master/hamburger.png?raw=true" /><br />
+                        @if (item.Description.Length > 25)
+                        {
+                            <span class="m-0" style="font-size:large;font-weight:bold;">@item.Description.Substring(0, 25)...</span>
+                        }
+                        else
+                        {
+                            <span style="font-size:large;font-weight:bold;">@item.Description</span>
+                        }
+                        <p><span style="font-size:medium">Nutrition info. in details</span><p>
+                            <a id="" class="btn btn-outline-dark pt-2 pb-2">Details</a>
+                    </div>
 
                 }
                 </div>
