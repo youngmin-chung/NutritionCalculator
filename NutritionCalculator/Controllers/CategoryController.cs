@@ -17,11 +17,22 @@ namespace NutritionCalculator.Controllers
          * What all of this does is really make the database data available to view in ViewModel instance.
          *
          */
-        public IActionResult Index()
+        // retrieve the menu items from the model so swe can popluate teh new property we just added.
+        public IActionResult Index(CategoryViewModel vm)
         {
-            CategoryModel model = new CategoryModel(_db);
-            CategoryViewModel viewModel = new CategoryViewModel();
-            viewModel.Categories = model.GetAll();
+            CategoryViewModel viewModel;
+            if (vm.Id == 0) // 1st time
+            {
+                viewModel = new CategoryViewModel();
+            }
+            else
+            {
+                viewModel = vm;
+                MenuItemModel itemModel = new MenuItemModel(_db);
+                viewModel.MenuItems = itemModel.GetAllByCategory(vm.Id);
+            }
+            CategoryModel catModel = new CategoryModel(_db);
+            viewModel.Categories = catModel.GetAll();
             return View(viewModel);
         }
     }

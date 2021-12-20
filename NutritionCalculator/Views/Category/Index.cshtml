@@ -2,13 +2,28 @@
 @{
     ViewData["Title"] = "Index";
 }
-<div class="text-center">
-    <h4>Categories</h4>
-    <br />
-    <form asp-controller="MenuItem" asp-action="Index" method="post">
-        <select asp-for="Id" asp-items="@Model.GetCategories()"
-                class="form-group form-control" onchange="this.form.submit();">
-            <option selected style="display:none;">Select Category</option>
-        </select>
-    </form>
+<div class="flex-container">
+    <div class="w-100">
+        <h4 style="text-align:center">Categories</h4>
+        <br />
+        <form asp-controller="Category" asp-action="Index" method="post">
+            <select asp-for="Id" asp-items="@Model.GetCategories()"
+                    class="form-group form-control" onchange="this.form.submit();">
+                <option selected style="display:none;">Select Category</option>
+            </select>
+        </form>
+        @if(Model.MenuItems != null && Model.MenuItems.Count() > 0)
+            {
+                <h5 class="mt-2">Items</h5>
+                <div class="mt-3" style="overflow-y:scroll; height:50vh">
+                    @foreach(MenuItem item in Model.MenuItems)
+                {
+                    <li class="list-group-item" >
+                        @item.Description
+                    </li>
+
+                }
+                </div>
+            }
+    </div>
 </div>

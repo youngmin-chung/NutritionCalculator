@@ -17,5 +17,7 @@ namespace NutritionCalculator.Models
                 Text = category.Name, Value = category.Id.ToString()
             });
         }
+        // to contain the child MenuItems directly in the parent
+        public IEnumerable<MenuItem> MenuItems { get; set; }
     }
 }
