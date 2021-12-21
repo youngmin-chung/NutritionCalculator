@@ -69,3 +69,19 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+.modalrow {
+    display: flex;
+}
+
+.columnL {
+    flex: 50%;
+    text-align: right;
+    padding-right: 2%;
+}
+
+.columnR {
+    flex: 50%;
+    text-align: left;
+    padding-left: 2%;
+}

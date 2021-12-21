@@ -12,7 +12,8 @@ namespace NutritionCalculator.Models
         public int Id { get; set; }
         // to contain the child MenuItems directly in the parent
         public IEnumerable<MenuItem> MenuItems { get; set; }
-        //public List<Category> Categories { get; set; }
+        public int CategoryId { get; set; }
+        public int Qty { get; set; }
         public IEnumerable<SelectListItem> GetCategories()
         {
             return _categories.Select(category => new SelectListItem

@@ -4,22 +4,27 @@
 }
 <div class="flex-container">
     <div class="w-100">
-        <h4 style="text-align:center">Categories</h4>
-        <br />
-        <form asp-controller="Category" asp-action="Index" method="post">
-            <select asp-for="Id" asp-items="@Model.GetCategories()"
+        <h4 class="text-center mb-2">Categories</h4>
+        <form asp-controller="Category" asp-action="SelectCategory" method="post">
+            <select style="position:relative;padding:5px;" asp-for="CategoryId" asp-items="@Model.GetCategories()"
                     class="form-group form-control" onchange="this.form.submit();">
                 <option selected style="display:none;">Select Category</option>
             </select>
         </form>
-        @if(Model.MenuItems != null && Model.MenuItems.Count() > 0)
-            {
-                <h5 class="mt-2">Items</h5>
-                <div class="row w-100 m-1" style="overflow-y:scroll; height:50vh">
-                    @foreach(MenuItem item in Model.MenuItems)
+        @if (Context.Session.Get<MenuItemViewModel[]>("menu") != null && Model.CategoryId > 0)
+        {
+            MenuItemViewModel[] menu = Context.Session.Get<MenuItemViewModel[]>("menu");
+            <h5>Items</h5>
+            <div class="row w-100 m-1" style="overflow-y:scroll;height:60vh;">
+                @foreach (MenuItemViewModel item in menu)
                 {
+                    // remove double apostrophe
+                    item.Description = item.Description.Contains("''") ?
+                    item.Description.Replace("''", "") : item.Description;
+                    var itemjson = JsonConvert.SerializeObject(item);
+                    var btn = "catbtn" + item.Id;
                     <div id="item" class="col-sm-3 col-xs-12 text-center" style="border:solid;">
-                        <img class="mt-2" style="width:100px;height:100px;" src="https://github.com/youngmin-chung/capture/blob/master/hamburger.png?raw=true" /><br />
+                        <img class="mt-2" style="width:100px; height:100px" src="https://github.com/youngmin-chung/capture/blob/master/hamburger.png?raw=true" /><br />
                         @if (item.Description.Length > 25)
                         {
                             <span class="m-0" style="font-size:large;font-weight:bold;">@item.Description.Substring(0, 25)...</span>
@@ -28,12 +33,74 @@
                         {
                             <span style="font-size:large;font-weight:bold;">@item.Description</span>
                         }
-                        <p><span style="font-size:medium">Nutrition info. in details</span><p>
-                            <a id="" class="btn btn-outline-dark pt-2 pb-2">Details</a>
+                        <p>
+                            <span style="font-size:medium">Nutrition info. in details</span>
+                        <p>
+                            <a id="@btn" href="#details_popup" data-toggle="modal" class="btn btn-outline-dark pt-2 pb-2" data-id="@item.Id" data-details="@itemjson">Details</a>
                     </div>
-
                 }
-                </div>
-            }
+            </div>
+        }
     </div>
 </div>
+<div class="modal" id="details_popup">
+    <div class="modal-dialog">
+        <div class="modal-content col-12">
+            <div class="modal-body">
+                <button type="button" class="close" style="font-size:xx-large;" data-dismiss="modal">X</button>
+                <div class="text-center">
+                    <img alt="" id="detailsGraphic" style="width:100px;height:100px"/><br />
+                    <h4 id="description"></h4>
+                </div>
+                <form asp-controller="Category" asp-action="SelectItem" method="post" role="form">
+                    <div class="text-center col-sm-offset-2">
+                        <div class="modalrow mt-4">
+                            <div class="columnL">Calories</div>
+                            <div class="columnR" id="Calories"></div>
+                        </div>
+                        <div class="modalrow">
+                            <div class="columnL">Carbohydrate</div>
+                            <div class="columnR" id="Carbohydrate"></div>
+                        </div>
+                        <div class="modalrow">
+                            <div class="columnL">Cholesterol</div>
+                            <div class="columnR" id="Cholesterol"></div>
+                        </div>
+                        <div class="modalrow">
+                            <div class="columnL">Fat (grams)</div>
+                            <div class="columnR" id="Fat"></div>
+                        </div>
+                        <div class="modalrow">
+                            <div class="columnL">Fibre (grams)</div>
+                            <div class="columnR" id="Fibre"></div>
+                        </div>
+                        <div class="modalrow">
+                            <div class="columnL">Protein</div>
+                            <div class="columnR" id="Protein"></div>
+                        </div>
+                        <div class="modalrow">
+                            <div class="columnL">Sodium (mgs.)</div>
+                            <div class="columnR" id="Sodium"></div>
+                        </div>
+                        <div class="modalrow mb-4">
+                            <div class="columnL">Qty</div>
+                            <div class="columnR" id="cal">
+                                <input asp-for="Qty" type="number" maxlength="3" size="3"
+                                       style="width: 50px;" id="qty" />
+                                <input asp-for="Id" type="hidden" id="selectedId" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-outline-dark">
+                            Add To Tray
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="m-2">
+                <div class="text-center font-weight-bold" id="results"> @ViewBag.AddMessage</div>
+            </div>
+        </div><!--modal-content-->
+    </div><!--modal-dialog-->
+</div><!--modal-->

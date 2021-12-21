@@ -44,10 +44,40 @@ namespace NutritionCalculator.Controllers
             {
                 // no need to go back to the database as information is already in the session
                 vm.SetCategories(HttpContext.Session.Get<List<Category>>("categories"));
-                MenuItemModel itemModel = new MenuItemModel(_db);
-                vm.MenuItems = itemModel.GetAllByCategory(vm.Id);
             }
             return View(vm);
+        }
+
+        public IActionResult SelectCategory(CategoryViewModel vm)
+        {
+            CategoryModel catModel = new CategoryModel(_db);
+            MenuItemModel menuModel = new MenuItemModel(_db);
+            List<MenuItem> items = menuModel.GetAllByCategory(vm.CategoryId);
+            List<MenuItemViewModel> vms = new List<MenuItemViewModel>();
+            if (items.Count > 0)
+            {
+                foreach (MenuItem item in items)
+                {
+                    MenuItemViewModel mvm = new MenuItemViewModel();
+                    mvm.Qty = 0;
+                    mvm.CategoryId = item.CategoryId;
+                    mvm.CategoryName = catModel.GetName(item.CategoryId);
+                    mvm.Description = item.Description;
+                    mvm.Id = item.Id;
+                    mvm.Protein = item.Protein;
+                    mvm.Sodium = item.Sodium;
+                    mvm.Fat = Convert.ToDecimal(item.Fat);
+                    mvm.Fibre = item.Fibre;
+                    mvm.Cholesterol = item.Cholesterol;
+                    mvm.Calories = item.Calories;
+                    mvm.Carbohydrate = item.Carbohydrate;
+                    vms.Add(mvm);
+                }
+                MenuItemViewModel[] myMenu = vms.ToArray();
+                HttpContext.Session.Set<MenuItemViewModel[]>("menu", myMenu);
+            }
+            vm.SetCategories(HttpContext.Session.Get<List<Category>>("categories"));
+            return View("Index", vm); // need the original Index View here
         }
     }
 }
