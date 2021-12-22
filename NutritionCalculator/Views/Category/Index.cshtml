@@ -11,36 +11,7 @@
                 <option selected style="display:none;">Select Category</option>
             </select>
         </form>
-        @*@if (Context.Session.Get<MenuItemViewModel[]>("menu") != null && Model.CategoryId > 0)
-        {
-            MenuItemViewModel[] menu = Context.Session.Get<MenuItemViewModel[]>("menu");
-            <h5>Items</h5>
-            <div class="row w-100 m-1" style="overflow-y:scroll;height:60vh;">
-                @foreach (MenuItemViewModel item in menu)
-                {
-                    // remove double apostrophe
-                    item.Description = item.Description.Contains("''") ?
-                    item.Description.Replace("''", "") : item.Description;
-                    var itemjson = JsonConvert.SerializeObject(item);
-                    var btn = "catbtn" + item.Id;
-                    <div id="item" class="col-sm-3 col-xs-12 text-center" style="border:solid;">
-                        <img class="mt-2" style="width:100px; height:100px" src="https://github.com/youngmin-chung/capture/blob/master/hamburger.png?raw=true" /><br />
-                        @if (item.Description.Length > 25)
-                        {
-                            <span class="m-0" style="font-size:large;font-weight:bold;">@item.Description.Substring(0, 25)...</span>
-                        }
-                        else
-                        {
-                            <span style="font-size:large;font-weight:bold;">@item.Description</span>
-                        }
-                        <p>
-                            <span style="font-size:medium">Nutrition info. in details</span>
-                        <p>
-                            <a id="@btn" href="#details_popup" data-toggle="modal" class="btn btn-outline-dark pt-2 pb-2" data-id="@item.Id" data-details="@itemjson">Details</a>
-                    </div>
-                }
-            </div>
-        }*@
+       
         <catalogue category="@Model.CategoryId"></catalogue>
     </div>
 </div>
@@ -93,9 +64,9 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-outline-dark">
-                            Add To Tray
-                        </button>
+                        <button type="submit" class="btn btn-outline-dark">Add To Tray</button>
+                        <button type="submit" id="btnRemove" class="btn btn-outline-danger">Remove Item</button>
+                        <a href="/Tray" class="btn btn-outline-success">View Tray</a>
                     </div>
                 </form>
             </div>
