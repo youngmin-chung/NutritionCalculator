@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace NutritionCalculator.Controllers
 {
-    public class CategoryController :Controller
+    public class CategoryController : Controller
     {
         AppDbContext _db;
         public CategoryController(AppDbContext context)
@@ -78,6 +78,45 @@ namespace NutritionCalculator.Controllers
             }
             vm.SetCategories(HttpContext.Session.Get<List<Category>>("categories"));
             return View("Index", vm); // need the original Index View here
+        }
+
+        public ActionResult SelectItem(CategoryViewModel vm)
+        {
+            Dictionary<int, object> tray;
+            if (HttpContext.Session.Get<Dictionary<int, Object>>("tray") == null)
+            {
+                tray = new Dictionary<int, object>();
+            }
+            else
+            {
+                tray = HttpContext.Session.Get<Dictionary<int, object>>("tray");
+            }
+            MenuItemViewModel[] menu = HttpContext.Session.Get<MenuItemViewModel[]>("menu");
+            String retMsg = "";
+            foreach (MenuItemViewModel item in menu)
+            {
+                if (item.Id == vm.Id)
+                {
+                    if (vm.Qty > 0) // update only selected item
+                    {
+                        item.Qty = vm.Qty;
+                        retMsg = vm.Qty + " item(s) Added!";
+                        tray[item.Id] = item;
+                    }
+                    else
+                    {
+                        item.Qty = 0;
+                        tray.Remove(item.Id);
+                        retMsg = "item(s) Removed!";
+                    }
+                    vm.CategoryId = item.CategoryId;
+                    break;
+                }
+            }
+            ViewBag.AddMessage = retMsg;
+            HttpContext.Session.Set<Dictionary<int, Object>>("tray", tray);
+            vm.SetCategories(HttpContext.Session.Get<List<Category>>("categories"));
+            return View("Index", vm);
         }
     }
 }

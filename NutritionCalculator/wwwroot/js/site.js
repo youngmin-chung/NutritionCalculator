@@ -25,3 +25,9 @@ const CopyToModal = (id, data) => {
     $("#detailsGraphic").attr("src", "https://github.com/youngmin-chung/capture/blob/master/hamburger.png?raw=true");
     $("#selectedId").val(id);
 }
+// re-pop modal to show newly created add message
+if ($("#selectedId").val() > 0) {
+    let data = $("#catbtn" + $("#selectedId").val()).data("details");
+    CopyToModal($("#selectedId").val(), data);
+    $("#details_popup").modal("show");
+}
