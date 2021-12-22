@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using NutritionCalculator.Models;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
 
 namespace NutritionCalculator.Controllers
 {
@@ -18,6 +19,8 @@ namespace NutritionCalculator.Controllers
         {
             //var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             //return Content(environment);
+
+            ViewBag.Message = HttpContext.Session.GetString("message");
             return View();
         }
 
