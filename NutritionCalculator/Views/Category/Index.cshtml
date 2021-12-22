@@ -11,7 +11,7 @@
                 <option selected style="display:none;">Select Category</option>
             </select>
         </form>
-        @if (Context.Session.Get<MenuItemViewModel[]>("menu") != null && Model.CategoryId > 0)
+        @*@if (Context.Session.Get<MenuItemViewModel[]>("menu") != null && Model.CategoryId > 0)
         {
             MenuItemViewModel[] menu = Context.Session.Get<MenuItemViewModel[]>("menu");
             <h5>Items</h5>
@@ -40,7 +40,8 @@
                     </div>
                 }
             </div>
-        }
+        }*@
+        <catalogue category="@Model.CategoryId"></catalogue>
     </div>
 </div>
 <div class="modal" id="details_popup">
