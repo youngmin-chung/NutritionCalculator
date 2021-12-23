@@ -5,6 +5,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +33,8 @@ namespace NutritionCalculator
             services.AddControllersWithViews();
             // Added for TagHelper
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
+            services.AddResponseCompression();
             services.AddMvc();
             // Adds a default in-memory implementation of IDistributedCache.
             services.AddDistributedMemoryCache();
