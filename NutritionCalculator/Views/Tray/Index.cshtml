@@ -7,12 +7,26 @@
     </div>
     <div class="text-center">
         @{ Dictionary<int, object> tray = Context.Session.Get<Dictionary<int, Object>>("tray");
-            int calTot = 0;
-            decimal fatTot = 0.0M;
-            int saltTot = 0;
-            int cholTot = 0;
-            int proTot = 0;
-            int fbrTot = 0; }
+            int calTotal = 0;
+            decimal fatTotal = 0.0M;
+            int sodiumTotal = 0;
+            int cholTotal = 0;
+            int proTotal = 0;
+            int fbrTotal = 0;
+            int carboTotal = 0;
+
+            int calorieDV = DailyValues.Calories;
+            decimal fatDV = DailyValues.Fat;
+            int sodiumDV = DailyValues.Sodium;
+            int cholesterolDV = DailyValues.Cholesterol;
+            int proteinDV = DailyValues.Protein;
+            int fibreDV = DailyValues.Fibre;
+            int carbohydrateDV = DailyValues.Carbohydrate;
+
+            
+
+            }
+
         <table class="table table-striped">
             <tr style="font-weight:bolder;">
                 <th class="text-center">Qty</th>
@@ -27,41 +41,116 @@
                         (Convert.ToString(tray[key]));
                         if (item.Qty > 0)
                         {
-                            fbrTot += item.Fibre * item.Qty;
-                            calTot += item.Calories * item.Qty;
-                            saltTot += item.Sodium * item.Qty;
-                            fatTot += item.Fat * item.Qty;
-                            cholTot += item.Cholesterol * item.Qty;
-                            proTot += item.Protein * item.Qty;
+                            fbrTotal += item.Fibre * item.Qty;
+                            calTotal += item.Calories * item.Qty;
+                            sodiumTotal += item.Sodium * item.Qty;
+                            fatTotal += item.Fat * item.Qty;
+                            cholTotal += item.Cholesterol * item.Qty;
+                            proTotal += item.Protein * item.Qty;
+                            carboTotal += item.Carbohydrate * item.Qty;
+
+
     <tr>
         <td class="text-center">@item.Qty</td>
         <td class="text-left">@item.Description</td>
-    </tr> }
+    </tr> 
+
+
+
+                        }
                     }
-                } }
+                }
+
+
+                double perCalorieDV = Math.Round(calTotal / Convert.ToDouble(calorieDV) * 100, 2);
+                decimal perFatDV = Decimal.Round((fatTotal / fatDV) * 100, 2);
+                double perSodiumDV = Math.Round(sodiumTotal / Convert.ToDouble(sodiumDV) * 100, 2);
+                double perCholesterolDV = Math.Round(cholTotal / Convert.ToDouble(cholesterolDV) * 100,2);
+                //int perProteinDV = proTotal/ proteinDV * 100;
+                double perFibreDV = Math.Round(fbrTotal / Convert.ToDouble(fibreDV) * 100,2);
+                double perCarbohydrateDV = Math.Round(carboTotal / Convert.ToDouble(carbohydrateDV) * 100,2);
+                }
         </table>
         <hr />
         <table class="table table-striped">
+
+
             <tr>
-                <th colspan="4" class="text-left" style="font-size:large;font-weight:bold;">Tray Totals</th>
+                <th class="text-right" style="font-size:large;font-weight:bold;">Categories</th>
+                <th class="text-left" style="font-size:large;font-weight:bold;">Tray Values</th>
+                <th class="text-right" style="font-size:large;font-weight:bold;">Categories</th>
+                <th class="text-left" style="font-size:large;font-weight:bold;">Daily Value</th>
+                <th class="text-center" style="font-size:large;font-weight:bold;">The percent daily value</th>
             </tr>
             <tr>
-                <td class="text-right font-weight-bold">Cals</td>
-                <td class="text-left" id="cal">@calTot</td>
-                <td class="text-right font-weight-bold">Choles.</td>
-                <td class="text-left" id="chol">@cholTot</td>
+                <td class="text-right font-weight-bold">Calories</td>
+                <td class="text-left" id="cal">@calTotal</td>
+                <td class="text-right font-weight-bold">Calories</td>
+                <td class="text-left" id="cal">@calorieDV</td>
+                <td class="text-center" id="cal" style="font-weight:bold;" >
+                    @perCalorieDV %
+
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right font-weight-bold">Cholesterol</td>
+                <td class="text-left" id="chol">@cholTotal</td>
+                <td class="text-right font-weight-bold">Cholesterol</td>
+                <td class="text-left" id="chol">@cholesterolDV</td>
+                <td class="text-center" id="cal" style="font-weight:bold;">
+                    @perCholesterolDV %
+
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right font-weight-bold">Carbohydrate</td>
+                <td class="text-left" id="carbo">@carboTotal</td>
+                <td class="text-right font-weight-bold">Carbohydrate</td>
+                <td class="text-left" id="carbo">@carbohydrateDV</td>
+                <td class="text-center" id="cal" style="font-weight:bold;">
+                    @perCarbohydrateDV %
+
+                </td>
             </tr>
             <tr>
                 <td class="text-right font-weight-bold">Fat</td>
-                <td class="text-left" id="fat">@fatTot</td>
-                <td class="text-right font-weight-bold">Fibre</td>
-                <td class="text-left" id="fibre">@fbrTot</td>
+                <td class="text-left" id="fat">@fatTotal</td>
+                <td class="text-right font-weight-bold">Fat</td>
+                <td class="text-left" id="fat">@fatDV</td>
+                <td class="text-center" id="cal" style="font-weight:bold;">
+                    @perFatDV %
+
+                </td>
             </tr>
             <tr>
                 <td class="text-right font-weight-bold">Protein</td>
-                <td class="text-left" id="pro">@proTot</td>
-                <td class="text-right font-weight-bold">Salt</td>
-                <td class="text-left" id="salt">@saltTot</td>
+                <td class="text-left" id="pro">@proTotal</td>
+                <td class="text-right font-weight-bold">Protein</td>
+                <td class="text-left" id="pro">@proteinDV</td>
+                <td class="text-center" id="cal" style="font-weight:bold;">
+                    No DV %
+
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right font-weight-bold">Fibre</td>
+                <td class="text-left" id="fibre">@fbrTotal</td>
+                <td class="text-right font-weight-bold">Fibre</td>
+                <td class="text-left" id="fibre">@fibreDV</td>
+                <td class="text-center" id="cal" style="font-weight:bold;">
+                    @perFibreDV %
+
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right font-weight-bold">Sodium</td>
+                <td class="text-left" id="pro">@sodiumTotal</td>
+                <td class="text-right font-weight-bold">Sodium</td>
+                <td class="text-left" id="salt">@sodiumDV</td>
+                <td class="text-center" id="cal" style="font-weight:bold;">
+                    @perSodiumDV %
+
+                </td>
             </tr>
         </table>
         <div class="text-center mb-3">
