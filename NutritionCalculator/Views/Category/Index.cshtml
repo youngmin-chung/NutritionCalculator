@@ -15,15 +15,16 @@
         <catalogue category="@Model.CategoryId"></catalogue>
     </div>
 </div>
-<div class="modal" id="details_popup">
+<div class="modal mt-3" id="details_popup">
     <div class="modal-dialog">
         <div class="modal-content col-12">
             <div class="modal-body">
                 <button type="button" class="close" style="font-size:xx-large;" data-dismiss="modal">X</button>
                 <div class="text-center">
-                    <img alt="" id="detailsGraphic" style="width:100px;height:100px"/><br />
-                    <h4 id="description"></h4>
+                    <img alt="" id="detailsGraphic" style="width:100px;height:100px" /><br />
+                    <h4 id="Description"></h4>
                 </div>
+
                 <form asp-controller="Category" asp-action="SelectItem" method="post" role="form">
                     <div class="text-center col-sm-offset-2">
                         <div class="modalrow mt-4">
