@@ -64,7 +64,7 @@ Nutrition Calcualator
 
 ## Authors
 
-* Youngmin Chung: C# | ASP.NET | JavaScript | Razor  | Bootstrap/CSS | Azure | SQL
+* Youngmin Chung: C# | ASP.NET | Jquary | Razor  | Bootstrap/CSS | Azure | SQL
 
 
 
