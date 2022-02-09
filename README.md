@@ -60,8 +60,6 @@ Nutrition Calcualator
 
 \ version 0.0.1 - updated McDonalds Nutrition Data
 
-\ version 0.0.2: improving now - To be improved design and layout, To be added payment method like stripe
-
 ## Authors
 
 * Youngmin Chung: C# | ASP.NET | Jquary | Razor  | Bootstrap/CSS | Azure | SQL
